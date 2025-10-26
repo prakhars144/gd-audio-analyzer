@@ -1,0 +1,10 @@
+# Normalize EOL for all files that Git considers text files.
+* text=auto eol=lf
+
+# Export-ignore files not needed for the addon to function
+/.godot/ export-ignore
+/anim/ export-ignore
+/EffectBlocks/ export-ignore
+*.import export-ignore
+*.tmp export-ignore
+*.log export-ignore

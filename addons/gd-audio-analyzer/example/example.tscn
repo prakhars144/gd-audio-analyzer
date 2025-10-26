@@ -1,0 +1,138 @@
+[gd_scene load_steps=13 format=3 uid="uid://bel65kqpml1fx"]
+
+[ext_resource type="Script" uid="uid://cke0egpo0coxd" path="res://addons/gd-audio-analyzer/example/volumetric_fog_color_cycler.gd" id="1_c4t0d"]
+[ext_resource type="Script" uid="uid://cfyq8p4tde0l3" path="res://addons/gd-audio-analyzer/example/multi_cube_visualizer.gd" id="2_baipp"]
+[ext_resource type="Script" uid="uid://dalwgf8kfr4fd" path="res://addons/gd-audio-analyzer/scripts/audio_analyzer.gd" id="3_iokqj"]
+[ext_resource type="AudioStream" uid="uid://c076aupb1iktm" path="res://addons/gd-audio-analyzer/example/Christmas synths.ogg" id="4_mmuxl"]
+[ext_resource type="Script" uid="uid://bgqjuuqf6n7pm" path="res://addons/gd-audio-analyzer/example/camera_shaker.gd" id="5_d0dot"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jicpm"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wmwjs"]
+sky_material = SubResource("ProceduralSkyMaterial_jicpm")
+
+[sub_resource type="Environment" id="Environment_4gr7l"]
+background_mode = 1
+sky = SubResource("Sky_wmwjs")
+tonemap_mode = 2
+glow_enabled = true
+volumetric_fog_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_swk4o"]
+size = Vector2(100, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_swk4o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4hh27"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hh27"]
+
+[node name="Example" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 4.0314837, 0)
+sky_mode = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." node_paths=PackedStringArray("world_environment", "audio_analyzer")]
+environment = SubResource("Environment_4gr7l")
+script = ExtResource("1_c4t0d")
+world_environment = NodePath(".")
+audio_analyzer = NodePath("../AudioAnalyzer")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_swk4o")
+surface_material_override/0 = SubResource("StandardMaterial3D_swk4o")
+
+[node name="Bars" type="Node3D" parent="." node_paths=PackedStringArray("audio_analyzer")]
+script = ExtResource("2_baipp")
+audio_analyzer = NodePath("../AudioAnalyzer")
+beat_boost_multiplier = 2.0
+
+[node name="Bar1" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar2" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar3" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar4" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar5" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar6" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="Bar7" type="MeshInstance3D" parent="Bars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 0)
+mesh = SubResource("BoxMesh_4hh27")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hh27")
+
+[node name="AudioAnalyzer" type="Node" parent="." node_paths=PackedStringArray("audio_player")]
+script = ExtResource("3_iokqj")
+audio_player = NodePath("../AudioStreamPlayer3D")
+num_bands = 7
+sensitivity = 1.5
+smoothing = 0.05
+max_scale = 25.0
+beat_threshold = 0.1
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_mmuxl")
+autoplay = true
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("audio_analyzer", "camera_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 7)
+script = ExtResource("5_d0dot")
+audio_analyzer = NodePath("../AudioAnalyzer")
+camera_target = NodePath(".")
+shake_intensity_multiplier = 0.5
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 5.917, 1)
+light_color = Color(1, 0, 0, 1)
+light_energy = 11.226
+light_volumetric_fog_energy = 3.0
+omni_range = 8.246
+omni_attenuation = 2.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.9169827, 1)
+light_color = Color(0.3125, 1, 0, 1)
+light_energy = 11.226
+light_volumetric_fog_energy = 3.0
+omni_range = 8.246
+omni_attenuation = 2.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 5.9169827, 1)
+light_color = Color(0, 0.6015625, 1, 1)
+light_energy = 11.226
+light_volumetric_fog_energy = 3.0
+omni_range = 8.246
+omni_attenuation = 2.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6.6314363)
+light_color = Color(1, 0.8203125, 0, 1)
+spot_range = 9.345
+spot_attenuation = 2.0
