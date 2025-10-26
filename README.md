@@ -2,7 +2,7 @@
 
 Real-time audio analysis toolkit for Godot 4.5+.
 
-![GD Audio Analyzer Demo](example.mp4)
+![GD Audio Analyzer Demo](example.gif)
 
 ## Features
 

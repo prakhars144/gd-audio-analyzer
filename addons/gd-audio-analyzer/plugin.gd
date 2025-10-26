@@ -1,10 +1,7 @@
 @tool
 extends EditorPlugin
 
-func _enter_tree():
-	# Add custom class types when plugin is enabled
-	print("GD Audio Analyzer: Enabling audio visualization toolkit...")
-	
+func _enter_tree():	
 	# AudioAnalyzer - Main audio analysis component
 	add_custom_type(
 		"AudioAnalyzer",
@@ -45,14 +42,11 @@ func _enter_tree():
 		load("res://addons/gd-audio-analyzer/icons/camera_shaker.svg")
 	)
 	
-	print("GD Audio Analyzer: Audio visualization components are now available in the Create Node dialog!")
 
 func _exit_tree():
 	# Remove custom class types when plugin is disabled
-	print("GD Audio Analyzer: Disabling audio visualization toolkit...")
 	remove_custom_type("AudioAnalyzer")
 	remove_custom_type("MultiCubeVisualizer") 
 	remove_custom_type("MultiCubeShaker")
 	remove_custom_type("VolumetricFogColorCycler")
 	remove_custom_type("CameraShaker")
-	print("GD Audio Analyzer: Plugin disabled.")
